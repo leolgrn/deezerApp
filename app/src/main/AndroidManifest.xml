@@ -14,7 +14,7 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning"
             android:usesCleartextTraffic="true">
-        <activity android:name=".albums.AlbumsActivity">
+        <activity android:name=".root.RootActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

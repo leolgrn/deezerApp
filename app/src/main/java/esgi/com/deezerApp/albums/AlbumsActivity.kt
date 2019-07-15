@@ -7,7 +7,7 @@ import esgi.com.deezerApp.R
 import esgi.com.deezerApp.common.BaseActivity
 import esgi.com.deezerApp.data.model.DeezerAlbums
 
-class AlbumsActivity: BaseActivity<AlbumsPresenter, AlbumsView>(R.layout.albums_activity), AlbumsView{
+class AlbumsActivity: BaseActivity<AlbumsPresenter, AlbumsView>(R.layout.activity_albums), AlbumsView{
 
     private lateinit var albumsRecyclerView: RecyclerView
     private var albumsAdapter: AlbumsAdapter? = null

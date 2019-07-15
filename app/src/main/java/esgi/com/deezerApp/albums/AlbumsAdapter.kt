@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import esgi.com.deezerApp.R
+import esgi.com.deezerApp.data.model.DeezerAlbum
 import esgi.com.deezerApp.data.model.DeezerAlbums
 
 class AlbumsAdapter: RecyclerView.Adapter<AlbumsAdapter.AlbumsViewHolder>(){
@@ -30,8 +31,8 @@ class AlbumsAdapter: RecyclerView.Adapter<AlbumsAdapter.AlbumsViewHolder>(){
 
     override fun onBindViewHolder(holder: AlbumsViewHolder, position: Int) {
         val album = data?.albums!![position]
-
         holder.title.text = album.title
+        holder.itemView.setOnClickListener{ listener?.OnClick(album) }
     }
 
     class AlbumsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)  {
@@ -39,7 +40,7 @@ class AlbumsAdapter: RecyclerView.Adapter<AlbumsAdapter.AlbumsViewHolder>(){
     }
 
     interface ClickListener {
-
+        fun OnClick(album: DeezerAlbum)
     }
 
 }

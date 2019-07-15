@@ -6,7 +6,7 @@ import esgi.com.deezerApp.data.dto.ETracklistResponse
 import esgi.com.deezerApp.data.dto.mapper.EAlbumsResponseMapper
 import esgi.com.deezerApp.data.dto.mapper.ETracklistResponseMapper
 import esgi.com.deezerApp.data.model.DeezerAlbums
-import esgi.com.deezerApp.data.model.DeezerTrack
+import esgi.com.deezerApp.data.model.DeezerTracklist
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -55,7 +55,7 @@ object DeezerProvider {
         })
     }
 
-    fun getTracklist(id: String, listener: Listener<List<DeezerTrack>>){
+    fun getTracklist(id: String, listener: Listener<DeezerTracklist>){
         service.getTracklist(id).enqueue(object: Callback<ETracklistResponse> {
             override fun onFailure(call: Call<ETracklistResponse>, t: Throwable) {
                 listener.onError(t)
@@ -67,7 +67,6 @@ object DeezerProvider {
                     listener.onSuccess(deezerTrackList)
                 }
             }
-
         })
     }
 
