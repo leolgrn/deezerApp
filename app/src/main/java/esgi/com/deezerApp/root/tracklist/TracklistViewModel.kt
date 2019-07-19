@@ -1,14 +1,12 @@
 package esgi.com.deezerApp.root.tracklist
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import esgi.com.deezerApp.data.api.DeezerProvider
 import esgi.com.deezerApp.data.model.DeezerTracklist
-import esgi.com.deezerApp.root.DataWrapper
-import esgi.com.deezerApp.root.Failure
-import esgi.com.deezerApp.root.Success
-import esgi.com.deezerApp.root.setLoadingState
+import esgi.com.deezerApp.root.*
 
 class TracklistViewModel : ViewModel() {
     private val tracklistMutableLiveData = MutableLiveData<DataWrapper<DeezerTracklist>>()
@@ -19,7 +17,8 @@ class TracklistViewModel : ViewModel() {
         DeezerProvider.getTracklist(id, object : DeezerProvider.Listener<DeezerTracklist> {
             override fun onSuccess(data: DeezerTracklist) {
                 tracklistMutableLiveData.setLoadingState(false)
-                tracklistMutableLiveData.value = Success(data)
+                data.error?.also { tracklistMutableLiveData.value = SuccessWithError(data.error) }
+                data.tracklist?.also { tracklistMutableLiveData.value = Success(data) }
             }
 
             override fun onError(t: Throwable) {

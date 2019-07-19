@@ -1,4 +1,4 @@
-package esgi.com.deezerApp.tracklist
+package esgi.com.deezerApp.root.tracklist.recyclerview
 
 import android.view.LayoutInflater
 import android.view.View
@@ -31,17 +31,22 @@ class TracklistAdapter: RecyclerView.Adapter<TracklistAdapter.TracklistViewHolde
     override fun getItemCount() = data?.tracklist?.size ?: 0
 
     override fun onBindViewHolder(holder: TracklistViewHolder, position: Int) {
-        val track = data!!.tracklist[position]
-        holder.title.text = track.title
-        holder.itemView.setOnClickListener{ listener?.OnClick(track) }
+        data!!.tracklist?.also {
+            val track = it[position]
+            holder.title.text = track.title
+            holder.artistName.text = track.deezerArtist?.name ?: ""
+            val list = it
+            holder.itemView.setOnClickListener{ listener?.onClick(list, position) }
+        }
     }
 
 
     class TracklistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val title: TextView = itemView.findViewById(R.id.item_track_title)
+        val artistName: TextView = itemView.findViewById(R.id.item_track_artist_name)
     }
 
     interface ClickListener{
-        fun OnClick(data: DeezerTrack)
+        fun onClick(data: List<DeezerTrack>, position: Int)
     }
 }

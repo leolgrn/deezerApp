@@ -11,7 +11,7 @@ data class EAlbumsResponse(
 
 data class EAlbum(
     @SerializedName("id") val id: String,
-    @SerializedName("cover") val cover: URL,
+    @SerializedName("cover") val cover: String,
     @SerializedName("title") val title: String,
-    @SerializedName("deezerArtist") val artist: EArtist?
+    @SerializedName("artist") val artist: EArtist?
 )

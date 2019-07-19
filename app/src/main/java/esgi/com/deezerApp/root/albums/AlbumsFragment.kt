@@ -1,18 +1,20 @@
 package esgi.com.deezerApp.root.albums
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import esgi.com.deezerApp.R
-import esgi.com.deezerApp.albums.AlbumsAdapter
+import esgi.com.deezerApp.root.albums.recyclerview.AlbumsAdapter
 import esgi.com.deezerApp.data.model.DeezerAlbum
 import esgi.com.deezerApp.data.model.DeezerAlbums
 import esgi.com.deezerApp.root.Success
@@ -24,13 +26,12 @@ class AlbumsFragment : Fragment() {
     private lateinit var viewModel: AlbumsViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.activity_albums, null)
+        return inflater.inflate(R.layout.fragment_albums, null)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         albumsRecyclerView = view.findViewById(R.id.albums_recyclerview)
-
         initRecyclerView()
     }
 
@@ -50,14 +51,29 @@ class AlbumsFragment : Fragment() {
         viewModel.loadAlbums()
     }
 
-    fun initRecyclerView(){
+    private fun initRecyclerView(){
+        albumsRecyclerView.apply {
+            postponeEnterTransition()
+            viewTreeObserver
+                .addOnPreDrawListener {
+                    startPostponedEnterTransition()
+                    true
+                }
+        }
         albumsAdapter = AlbumsAdapter()
         albumsAdapter?.setListener(object: AlbumsAdapter.ClickListener{
-            override fun OnClick(album: DeezerAlbum) {
-                Log.d("ALBUM_CLICK", album.id)
+            override fun onClick(album: DeezerAlbum, albumImage: AppCompatImageView) {
                 view?.also {
-                    val action = AlbumsFragmentDirections.actionAlbumsFragmentToTracklistFragment(album.id)
-                    Navigation.findNavController(it).navigate(action)
+                    val action = AlbumsFragmentDirections.actionAlbumsFragmentToTracklistFragment(
+                        album.id,
+                        album.title,
+                        album.deezerArtist?.name ?: "Unknown artist",
+                        album.cover
+                    )
+                    val extras = FragmentNavigatorExtras(
+                        albumImage to "album_image"
+                    )
+                    Navigation.findNavController(it).navigate(action, extras)
                 }
             }
         })
@@ -65,7 +81,7 @@ class AlbumsFragment : Fragment() {
         albumsRecyclerView.layoutManager = LinearLayoutManager(context)
     }
 
-    fun updateData(data: DeezerAlbums){
+    private fun updateData(data: DeezerAlbums){
         albumsAdapter?.setData(data)
     }
 

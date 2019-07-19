@@ -1,8 +1,9 @@
 package esgi.com.deezerApp.data.model
 
-import java.net.URL
-
-data class DeezerTracklist(val tracklist: List<DeezerTrack>)
+data class DeezerTracklist(
+    val tracklist: List<DeezerTrack>?,
+    val error: DeezerError?
+)
 
 data class DeezerTrack(
     val id: String,

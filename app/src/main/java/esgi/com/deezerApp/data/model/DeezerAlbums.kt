@@ -10,7 +10,7 @@ data class DeezerAlbums(
 
 data class DeezerAlbum(
     val id: String,
-    val cover: URL,
+    val cover: String,
     val title: String,
     val deezerArtist: DeezerArtist?
 )
